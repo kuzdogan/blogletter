@@ -1,5 +1,6 @@
 const BlogPost = require('../models/BlogPost');
 const Blog = require('../models/Blog');
+const Subscription = require('../models/Subscription');
 const emailValidator = require("email-validator");
 const axios = require('axios');
 
@@ -13,9 +14,10 @@ const axios = require('axios');
  * 
  * Makes the checks. If all pass adds subscription and returns success. If fail, returns the errors.
  */
-exports.addNewSubscription = async (req, res) => {
+exports.addNewSubscription = async (req, res, next) => {
   // TODO: Check if valid mail.
   let email = req.body.email;
+  let name = req.body.name;
   // TODO: Put address into a standard format.
   let blogAddress = req.body.blogAddress;
   console.log(email);
@@ -25,14 +27,21 @@ exports.addNewSubscription = async (req, res) => {
     res.status(400).json({ message: 'Invalid email ' });
   }
   // TODO: Check if valid blog. i.e. blogger or other supported.
-  // TODO: Check if the mail already subscribed to the blog.
 
-  checkBlogExists(blogAddress)
+  checkSubscriptionExists(email, blogAddress)
+    .then(doesSubsExist => {
+      if (doesSubsExist) {
+        res.status(400).json({ message: 'Already subscribed ' });
+        throw new Error(`User ${email} already subscribed`);
+      }
+      else
+        return checkBlogExists(blogAddress)
+    })
     .then((blog) => {
       // Don't fetch all posts again if blog is already in db.
       if (blog) {
         console.log('Blog exists. No need to fetch blog posts');
-        return blog;
+        return Promise.resolve(blog);
       } else { // Fetch the blog posts and create a new Blog with posts.
         return fetchBlogPosts(blogAddress)
           .then(formatBlogPosts)
@@ -40,12 +49,18 @@ exports.addNewSubscription = async (req, res) => {
           .then((blogPosts) => createBlogWithBlogPosts(blogAddress, blogPosts))
       }
     })
+    .then((blog) => createNewSubscription(name, email, blog))
     .then(console.log)
+    .then(() => {
+      res.status(200).send('New subscription added!');
+    })
+    .catch(err => {
+      next(err); // Forward errors to express to handle.
+    })
   // TODO: Create subscription.
 
   // TODO: Return success.
 
-  res.status(200).send('New subscription added!');
 };
 
 /**
@@ -115,15 +130,7 @@ const saveBlogPosts = (posts) => {
  * @returns {Promise} that resolves to the Blog if exist or to false if does not exist.
  */
 const checkBlogExists = (blogAddress) => {
-  return Blog.find({ blogAddress: blogAddress })
-    .then(result => {
-      return new Promise((resolve) => {
-        if (result.length !== 0)
-          resolve(result);
-        resolve(false);
-      })
-    })
-    .catch(console.error)
+  return Blog.findOne({ blogAddress: blogAddress })
 }
 
 /**
@@ -139,4 +146,32 @@ const createBlogWithBlogPosts = (blogAddress, blogPosts) => {
     blogPosts: blogPosts.map(blogPost => blogPost._id)
   });
   return blog.save();
+}
+
+/**
+ * Function to create a new Subscription in the database.
+ * 
+ * @param {String} name 
+ * @param {String} email 
+ * @param {Object} blog - Blog object to be subscribed to
+ */
+const createNewSubscription = (name, email, blog) => {
+  console.log('Creating new subscription');
+  let subscription = new Subscription({
+    name,
+    email,
+    blog: blog._id,
+    blogPostsSent: [],
+    blogPostsToSend: blog.blogPosts // Same _id array.
+  })
+  return subscription.save();
+}
+
+const checkSubscriptionExists = (email, blogAddress) => {
+  // If blog does not exists, the subscription also doesn't exist.
+  return checkBlogExists(blogAddress).then(blog => {
+    if (!blog)
+      return false;
+    return Subscription.exists({ email, blog: blog._id });
+  })
 }
