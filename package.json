@@ -1,0 +1,34 @@
+{
+  "name": "blogger-to-newsletter",
+  "version": "1.0.0",
+  "description": "A service to receive articles of an old well established blogger blog as regular newsletters",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuzdogan/blogger-to-newsletter.git"
+  },
+  "keywords": [
+    "blogger",
+    "blog",
+    "newsletter",
+    "email"
+  ],
+  "author": "kuzdogan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kuzdogan/blogger-to-newsletter/issues"
+  },
+  "homepage": "https://github.com/kuzdogan/blogger-to-newsletter#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "email-validator": "^2.0.4",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
