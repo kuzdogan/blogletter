@@ -13,6 +13,7 @@ const port = process.env.PORT || 3000;
 const dbConfig = config.databaseConfig;
 const dbURL = 'mongodb://' + config.dbURL;
 console.log(dbURL)
+console.log(dbConfig)
 mongoConnect(dbURL, dbConfig);
 
 

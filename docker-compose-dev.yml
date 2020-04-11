@@ -1,0 +1,22 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:4
+    container_name: blogletter-mongo-dev
+    volumes:
+      - /data/db
+    ports:
+      - "27017:27017"
+  server:
+    image: node:12
+    container_name: blogletter-server-dev
+    volumes:  
+      - ./:/home/node/app
+    working_dir: /home/node/app
+    depends_on: 
+      - mongo
+    env_file: 
+      - .env
+    ports:
+      - "3000:3000"
+    command: bash -c "npx nodemon server.js"
