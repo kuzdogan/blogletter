@@ -30,6 +30,8 @@
     "mongoose": "^5.9.7"
   },
   "devDependencies": {
+    "chalk": "^4.0.0",
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.3"
   }
 }

@@ -28,6 +28,7 @@ exports.addNewSubscription = async (req, res) => {
   // TODO: Fetch blog posts and store them in db.
   fetchBlogPosts(blogAddress)
     .then(formatBlogPosts)
+    .then(saveBlogPosts)
     .then(console.log)
   // TODO: Create subscription.
   // TODO: Return success.
@@ -44,7 +45,7 @@ exports.addNewSubscription = async (req, res) => {
  * @returns {Promise} A promise resolving to the array of raw post objects. 
  */
 const fetchBlogPosts = (blogAddress) => {
-  const maxResults = 2; // Google Data API accepts at most 500.
+  const maxResults = 1; // Google Data API accepts at most 500.
   const subRoute = '/feeds/posts/default/';
   const query = '?alt=json&max-results=' + maxResults;
   const URL = blogAddress + subRoute + query;
