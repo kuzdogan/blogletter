@@ -1,4 +1,5 @@
 const BlogPost = require('../models/BlogPost');
+const Blog = require('../models/Blog');
 const emailValidator = require("email-validator");
 const axios = require('axios');
 
@@ -15,6 +16,7 @@ const axios = require('axios');
 exports.addNewSubscription = async (req, res) => {
   // TODO: Check if valid mail.
   let email = req.body.email;
+  // TODO: Put address into a standard format.
   let blogAddress = req.body.blogAddress;
   console.log(email);
   console.log(blogAddress);
@@ -24,13 +26,23 @@ exports.addNewSubscription = async (req, res) => {
   }
   // TODO: Check if valid blog. i.e. blogger or other supported.
   // TODO: Check if the mail already subscribed to the blog.
-  // TODO: Check if the blog is already in the db.
-  // TODO: Fetch blog posts and store them in db.
-  fetchBlogPosts(blogAddress)
-    .then(formatBlogPosts)
-    .then(saveBlogPosts)
+
+  checkBlogExists(blogAddress)
+    .then((blog) => {
+      // Don't fetch all posts again if blog is already in db.
+      if (blog) {
+        console.log('Blog exists. No need to fetch blog posts');
+        return blog;
+      } else { // Fetch the blog posts and create a new Blog with posts.
+        return fetchBlogPosts(blogAddress)
+          .then(formatBlogPosts)
+          .then(saveBlogPosts)
+          .then((blogPosts) => createBlogWithBlogPosts(blogAddress, blogPosts))
+      }
+    })
     .then(console.log)
   // TODO: Create subscription.
+
   // TODO: Return success.
 
   res.status(200).send('New subscription added!');
@@ -45,7 +57,7 @@ exports.addNewSubscription = async (req, res) => {
  * @returns {Promise} A promise resolving to the array of raw post objects. 
  */
 const fetchBlogPosts = (blogAddress) => {
-  const maxResults = 1; // Google Data API accepts at most 500.
+  const maxResults = 2; // Google Data API accepts at most 500.
   const subRoute = '/feeds/posts/default/';
   const query = '?alt=json&max-results=' + maxResults;
   const URL = blogAddress + subRoute + query;
@@ -94,4 +106,37 @@ const saveBlogPosts = (posts) => {
   });
 
   return Promise.all(promises);
+}
+
+/**
+ * Checks if the blog at the blogAddress is already registered.
+ * 
+ * @param {String} blogAddress 
+ * @returns {Promise} that resolves to the Blog if exist or to false if does not exist.
+ */
+const checkBlogExists = (blogAddress) => {
+  return Blog.find({ blogAddress: blogAddress })
+    .then(result => {
+      return new Promise((resolve) => {
+        if (result.length !== 0)
+          resolve(result);
+        resolve(false);
+      })
+    })
+    .catch(console.error)
+}
+
+/**
+ * Function to create a new Blog with an address and blog posts.
+ * 
+ * @param {String} blogAdress - URL of the blog
+ * @param {Array<Object>} blogPosts - Array of blogposts.
+ * @returns {Promise} resvoling to a Blog object.
+ */
+const createBlogWithBlogPosts = (blogAddress, blogPosts) => {
+  let blog = new Blog({
+    blogAddress: blogAddress,
+    blogPosts: blogPosts.map(blogPost => blogPost._id)
+  });
+  return blog.save();
 }
