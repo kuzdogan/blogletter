@@ -72,7 +72,7 @@ exports.addNewSubscription = async (req, res, next) => {
  * @returns {Promise} A promise resolving to the array of raw post objects. 
  */
 const fetchBlogPosts = (blogAddress) => {
-  const maxResults = 2; // Google Data API accepts at most 500.
+  const maxResults = 50; // Google Data API accepts at most 500.
   const subRoute = '/feeds/posts/default/';
   const query = '?alt=json&max-results=' + maxResults;
   const URL = blogAddress + subRoute + query;

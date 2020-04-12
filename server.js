@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoConnect = require('./utils/mongo');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const config = require('./config');
+const { sendEmail } = require('./utils/emailer');
 
 // Express
 const app = express();
@@ -46,5 +47,7 @@ app.use('/api', subscriptionRoutes);
 app.listen(port, () => {
   console.log('Express Listening at http://localhost:' + port);
 });
+
+sendEmail();
 
 module.exports = app;
