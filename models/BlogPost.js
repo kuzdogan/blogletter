@@ -8,7 +8,7 @@ const BlogPostSchema = new mongoose.Schema({
   dateUpdated: Date,
   url: String,
   content: {
-    type: String,
+    format: String, // Don't use key 'type'
     body: String
   }
 });

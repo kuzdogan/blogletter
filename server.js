@@ -4,7 +4,7 @@ const cors = require('cors');
 const mongoConnect = require('./utils/mongo');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const config = require('./config');
-const { findNextBlogPostToSend } = require('./services/blogPost');
+const { sendNextEmailToSubscription } = require('./services/emailer');
 // Express
 const app = express();
 const port = process.env.PORT || 3000;
@@ -47,5 +47,5 @@ app.listen(port, () => {
   console.log('Express Listening at http://localhost:' + port);
 });
 
-findNextBlogPostToSend('5e933c7e9b03eb002fff5a1b')
+// sendNextEmailToSubscription('5e94c988087117033399f9d8')
 module.exports = app;

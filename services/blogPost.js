@@ -29,6 +29,7 @@ exports.fetchBlogPosts = (blogAddress) => {
  */
 exports.formatBlogPosts = (posts) => {
   let formattedPosts = posts.map(post => {
+    // console.log(post.content)
     return {
       title: post.title['$t'],
       author: post.author[0].name['$t'],
@@ -37,10 +38,10 @@ exports.formatBlogPosts = (posts) => {
       url: post.link.find(obj => {
         return obj.rel === 'alternate' && obj.type === 'text/html'
       }).href, // link is an array of link in different formats. Find the html link and return the href.
-      // content: {
-      //   type: post.content.type,
-      //   body: post.content['$t']
-      // }
+      content: {
+        format: post.content.type,
+        body: post.content['$t']
+      }
     }
   });
   return formattedPosts;
@@ -68,14 +69,24 @@ exports.saveBlogPosts = (posts) => {
  * @param {subscriptionId} MongoDB _id of the subscription.
  * @return {Promise} that resolves to the BlogPost to be sent.
  */
-exports.findNextBlogPostToSend = (subscriptionId) => {
-  return findSubscriptionWithId(subscriptionId)
-    .then((subscription) => {
-      let nextBlogPostId = subscription.blogPostsToSend[0];
-      console.log(`nextBlogPostId is: ${nextBlogPostId}`);
-      return BlogPost.findById(nextBlogPostId)
-    })
-    .then(nextBlogPost => {
-      console.log(nextBlogPost);
-    })
+exports.findNextBlogPostToSend = (subscription) => {
+  let postsToSendCount = subscription.blogPostsToSend.length;
+  // TODO: Check zero case
+  let nextBlogPostId = subscription.blogPostsToSend[postsToSendCount - 1]; // Get last item. Chronologically ordered. 
+  console.log(`nextBlogPostId is: ${nextBlogPostId}`);
+  return BlogPost.findById(nextBlogPostId);
+}
+
+/**
+ * Function to process the blog post after being emailed. 
+ * Namely moving the blogPost from BlogPost.blogPostsToSend to BlogPost.blogPostsSent.
+ * 
+ * @param {BlogPost} that is sent
+ * @returns {Promise} that resolves to the modified and saved subscription.
+ */
+exports.handleBlogPostSent = (subscription) => {
+  let blogPostId = subscription.blogPostsToSend.$pop() // Get last item. 
+  console.log('Popped item: ' + blogPostId)
+  subscription.blogPostsSent.push(blogPostId);
+  return subscription.save();
 }

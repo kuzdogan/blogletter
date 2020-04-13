@@ -6,7 +6,7 @@ const Blog = require('../models/Blog');
  * @param {String} blogAddress 
  * @returns {Promise} that resolves to the Blog if exist or to false if does not exist.
  */
-exports.checkBlogExists = (blogAddress) => {
+exports.findBlog = (blogAddress) => {
   return Blog.findOne({ blogAddress: blogAddress })
 }
 

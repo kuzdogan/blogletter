@@ -1,7 +1,6 @@
-const Subscription = require('../models/Subscription');
 const emailValidator = require("email-validator");
 const { fetchBlogPosts, formatBlogPosts, saveBlogPosts } = require('../services/blogPost');
-const { checkBlogExists, createBlogWithBlogPosts } = require('../services/blogPost');
+const { findBlog, createBlogWithBlogPosts } = require('../services/blog');
 const { createNewSubscription, checkSubscriptionExists } = require('../services/subscription');
 
 /**
@@ -35,7 +34,7 @@ exports.addNewSubscription = async (req, res, next) => {
         throw new Error(`User ${email} already subscribed`);
       }
       else
-        return checkBlogExists(blogAddress)
+        return findBlog(blogAddress)
     })
     .then((blog) => {
       // Don't fetch all posts again if blog is already in db.

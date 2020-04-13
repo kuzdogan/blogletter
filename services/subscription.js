@@ -1,4 +1,4 @@
-const { checkBlogExists } = require('./blog');
+const { findBlog } = require('./blog');
 const Subscription = require('../models/Subscription');
 
 /**
@@ -22,7 +22,7 @@ exports.createNewSubscription = (name, email, blog) => {
 
 exports.checkSubscriptionExists = (email, blogAddress) => {
   // If blog does not exists, the subscription also doesn't exist.
-  return checkBlogExists(blogAddress).then(blog => {
+  return findBlog(blogAddress).then(blog => {
     if (!blog)
       return false;
     return Subscription.exists({ email, blog: blog._id });
