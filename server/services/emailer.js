@@ -11,12 +11,12 @@ const transport = nodemailer.createTransport({
   }
 });
 
-exports.sendEmail = (from, to, subject, text) => {
+exports.sendEmail = (from, to, subject, html) => {
   const message = {
     from: from, // Sender address
     to: to,         // List of recipients
     subject: subject, // Subject line
-    text: text // Plain text body
+    html: html // Plain text body
   };
 
   return transport.sendMail(message);
@@ -41,10 +41,15 @@ exports.sendNextEmailToSubscription = (subscriptionId) => {
       return findNextBlogPostToSend(subscription)
     })
     .then(nextBlogPost => {
+      // If no more blog posts left to send
+      if (!nextBlogPost) {
+        // TODO: Remove scheduler
+        throw new Error('No more posts to send');
+      }
       let contentBody = nextBlogPost.content.body;
       let title = nextBlogPost.title;
       return this.sendEmail('blogletter@test.org', receiverEmail, title, contentBody)
     })
-    .then(() => handleBlogPostSent(this.subscription))
+    .then(() => { console.log('Handling post sent'); handleBlogPostSent(this.subscription) })
     .catch(console.error)
 }

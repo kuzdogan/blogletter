@@ -11,7 +11,7 @@ services:
     image: node:12
     container_name: blogletter-server-dev
     volumes:  
-      - ./:/home/node/app
+      - ./server:/home/node/app
     working_dir: /home/node/app
     depends_on: 
       - mongo

@@ -30,3 +30,8 @@ I first thought about using rss feeds of a blog. It seems they only return most 
 However, the [Blogger API](https://developers.google.com/gdata/docs/2.0/basics) which makes use of the [Google Data API](https://developers.google.com/gdata/docs/2.0/basics) has nice set of parameters that can be passed as queries.
 Such as `max-results`. It takes a maximum value of 500. [Here](https://too-clever-by-half.blogspot.com/2011/12/blog-feed-500-post-limit-for-more-than.html) is explained how to handle the situation wiht more than 500 items.
 Plus it supports returning json so no need for XML shit.
+
+### Problem: How to make the frontend? 
+Should I use server side rendering for SEO? Should I just do plain HTML/JS/CSS? Maybe React + Next.js? 
+
+Just do whatever works for you. For me react would be the easiest I guess.

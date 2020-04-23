@@ -47,5 +47,5 @@ app.listen(port, () => {
   console.log('Express Listening at http://localhost:' + port);
 });
 
-// sendNextEmailToSubscription('5e94c988087117033399f9d8')
-module.exports = app;
+sendNextEmailToSubscription('5ea1facb5766c20023efe028')
+module.exports = app; 

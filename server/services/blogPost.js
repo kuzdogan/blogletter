@@ -67,7 +67,7 @@ exports.saveBlogPosts = (posts) => {
  * Function to find the next blog post to be sent to a subscription.
  * 
  * @param {subscriptionId} MongoDB _id of the subscription.
- * @return {Promise} that resolves to the BlogPost to be sent.
+ * @return {Promise} that resolves to the BlogPost to be sent or null if no post found
  */
 exports.findNextBlogPostToSend = (subscription) => {
   let postsToSendCount = subscription.blogPostsToSend.length;
