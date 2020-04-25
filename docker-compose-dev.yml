@@ -20,3 +20,19 @@ services:
     ports:
       - "3000:3000"
     command: bash -c "npx nodemon server.js"
+  client:
+    image: node:12
+    container_name: blogletter-client-dev
+    volumes:  
+      - ./client:/home/node/app
+    working_dir: /home/node/app
+    depends_on: 
+      - server
+    environment:
+      - PORT=3001
+    env_file: 
+      - .env
+    ports:
+      - "3001:3001"
+    # Use npx concurrently to avoid create-react-app from clearing the console.
+    command: bash -c "npx concurrently npm:start"
