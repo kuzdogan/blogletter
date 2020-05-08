@@ -1,0 +1,36 @@
+.App {
+  height: 100%;
+  margin: 0 100px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.heading h1 {
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.heading h2 {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.form-and-image {
+  display: flex;
+  flex-direction: row;
+}
+
+.image-wrapper {
+  /* Grow 1 unit, form grows 2 units */
+  flex: 1; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    max-width: 300px;
+  }
+}
+
+.form-wrapper {
+  /* Grow 2 units, form grows 1 unit */
+  flex: 2; 
+}

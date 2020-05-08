@@ -1,12 +1,14 @@
 import React from "react";
-import "./Navbar.css";
+import icon from "../../mail-icon.png";
+import "./Navbar.scss";
 
 export default function Navbar(props) {
 
   return (
     <header>
       <div className='navbar'>
-        Blogletter
+        <img src={icon} className="icon"/>
+        blogletter
       </div>
     </header>
   );

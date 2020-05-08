@@ -1,0 +1,14 @@
+@import "../../theme.scss";
+
+.navbar {
+  display: flex;
+  align-items: center;
+  height: 100px;
+  font-family: 'Pattaya', sans-serif;
+  color: #F58444;
+  font-size: 32px;
+  .icon {
+    margin-right: 12px;
+    height: 32px;
+  }
+}
