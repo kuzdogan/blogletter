@@ -1,0 +1,24 @@
+@import "../../theme.scss";
+
+.bullet {
+  margin: 32px 0;
+}
+
+li {
+  font-size: 24px;
+  font-weight: 500;
+  list-style-position: inside;
+  margin-bottom: 8px;
+  &::before {
+    vertical-align: middle;
+    margin-right: 8px;
+    content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+    color: $primaryColor;
+    font-size: 32px;
+  }
+}
+
+span {
+  font-size: 14px;
+}
+

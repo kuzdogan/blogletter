@@ -7,7 +7,7 @@ export default function Navbar(props) {
   return (
     <header>
       <div className='navbar'>
-        <img src={icon} className="icon"/>
+        <img src={icon} className="icon" alt="blogletter icon"/>
         blogletter
       </div>
     </header>
