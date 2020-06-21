@@ -9,16 +9,22 @@
     margin: 8px 0;
   }
   input {
+    box-sizing: border-box;
     padding-left: 12px;
     font-family: Raleway sans-serif;
     font-weight: 300;
     border: 3px solid $primaryColor;
     border-radius: 10px;
     height: 50px;
-    width: 450px;
+    width: 100%;
     outline: none;
     &::placeholder {
       color: rgba(0, 0, 0, 0.5);
     }
+  }
+
+  .description {
+    font-size: 12px;
+    font-weight: 300;
   }
 }

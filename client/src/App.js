@@ -39,15 +39,16 @@ function App() {
     <div className="App">
       <Navbar />
       <CallToAction/>
-      <Form/>
-      <div className="form-image">
+      <div className="form-and-image-wrapper">
+        <div className="form-wrapper">
+          <Form />
+        </div>
         <div className="image-wrapper">
-          <img src={illustration} alt="Illustration depicting Wordpress and Blogspot icons as newsletters"/>
+          <img src={illustration} alt="Illustration depicting Wordpress and Blogspot icons as newsletters" />
         </div>
       </div>
       <BulletTexts/>
     </div>
-    
   );
 }
 

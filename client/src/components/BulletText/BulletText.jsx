@@ -3,7 +3,7 @@ import React from "react";
 import "./BulletText.scss";
 
 BulletText.propTypes = {
-  children: PropTypes.string.isRequired
+  children: PropTypes.array.isRequired
 };
 
 export default function BulletText(props) {

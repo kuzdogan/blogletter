@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../Button";
 import FormInput from "../FormInput";
+import "./Form.scss";
+import WeekdaySelector from "./WeekdaySelector";
 
 export default function Form(){
-  return(
-    <div className="form-wrapper">
+  const [isExpanded, setExpanded] = useState(false);
+
+  return (
+    <div className="form-inputs-wrapper">
       <form>
-        <FormInput title="Your Email" placeholder="john@mail.com" />
-        <FormInput title="Blog Address" placeholder="myfavblog.blogspot.com" />
-        <FormInput title="Your Name (optional)" placeholder="John Doe" />
+        <FormInput onFocus={() => setExpanded(true)} title="Your Email" >
+          <input placeholder="john@mail.com" />
+        </FormInput>
+        <FormInput onFocus={() => setExpanded(true)} title="Blog Address" >
+          <input placeholder="myfavblog.blogspot.com" />
+        </FormInput>
+        <FormInput style={{ display: isExpanded ? "inherit" : "none" }} title="Your Name (optional)">
+          <input placeholder="John Doe" />
+        </FormInput>
+        <FormInput title="Frequency" >
+          <span className="description">Every week on these days:</span>
+          <WeekdaySelector/>
+        </FormInput>
         <Button>Sign Up</Button>
       </form>
     </div>

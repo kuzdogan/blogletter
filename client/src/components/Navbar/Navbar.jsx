@@ -2,8 +2,7 @@ import React from "react";
 import icon from "../../mail-icon.png";
 import "./Navbar.scss";
 
-export default function Navbar(props) {
-
+export default function Navbar() {
   return (
     <header>
       <div className='navbar'>

@@ -4,14 +4,14 @@ import "./FormInput.scss";
 
 FormInput.propTypes = {
   title: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired
+  children: PropTypes.any.isRequired
 };
 
 export default function FormInput (props) {
   return(
-    <div className="form-input">
+    <div className="form-input" {...props}>
       <h4>{props.title}</h4>
-      <input placeholder={props.placeholder}/>
+      {props.children}
     </div>
   );
 }
