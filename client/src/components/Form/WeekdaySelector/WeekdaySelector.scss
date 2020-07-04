@@ -1,0 +1,29 @@
+@import "../../../theme.scss";
+
+.weekday-selector-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 8px;
+  
+  .weekday-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    margin: 0 4px;
+    background-color: $gray;
+    color: $lightGray;
+    transition: background-color 300ms, color 300ms;
+    
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .active {
+    background-color: $green;
+    color: white;
+  }
+}
